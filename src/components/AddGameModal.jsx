@@ -7,6 +7,7 @@ import PS4_Logo from '../assets/ps4-c-logo.png'
 import PS5_Logo from '../assets/ps5-c-logo.png'
 import switch_Logo from '../assets/switch-c-logo.png'
 import { useContextHook, Context } from '../helpers/context';
+import Error from './ErrorMessage';
 
 const AddGameModal = () => {
   const { getters, setters } = useContextHook(Context);
@@ -18,18 +19,36 @@ const AddGameModal = () => {
   const [checkedDigital, setCheckedDigital] = useState(true);
   const [checkedPhysical, setCheckedPhysical] = useState(true);
 
+  const [createErrTitle, setErrTitle] = useState(false);
+  const [errMsgTitle, setErrMsgTitle] = useState('');
+  const [createErrPlat, setErrPlat] = useState(false);
+  const [errMsgPlat, setErrMsgPlat] = useState('');
+
   const [gameTitle, setGameTitle] = useState('')
   const handleClose = () => {
     setCheckedPS5(false)
     setCheckedPS4(false)
     setCheckedSWITCH(false)
     setShow(false)
+    setErrTitle(false)
+    setErrPlat(false)
   };
   const handleShow = () => setShow(true);
   
   const SaveGameToMemory = () => {
 
     const gameDict = {}
+    if (gameTitle === '') {
+      setErrTitle(true);
+      setErrMsgTitle('Please enter a game title.');
+      return;
+    }
+    if (!checkedPS5 && !checkedPS4 && !checkedSWITCH) {
+      setErrPlat(true);
+      setErrMsgPlat('Please select a platform.');
+      return;
+    }
+
     gameDict[gameTitle] = {'platforms': [], 'physical': checkedPhysical, 'digital': checkedDigital}
 
     if (checkedPS5) {
@@ -44,10 +63,9 @@ const AddGameModal = () => {
 
     const currentTrackedGames = getters.trackedGames
     currentTrackedGames[gameTitle] = gameDict[gameTitle]
-
     setters.setTrackedGames(currentTrackedGames)
-
     console.log(getters.trackedGames)
+    handleClose()
   }
 
   return (
@@ -61,6 +79,20 @@ const AddGameModal = () => {
         </Modal.Header>
 
         <Modal.Body>
+          <Form>
+            <FormInput 
+              label='Game Title'
+              id='gameTitle'
+              type='text'
+              onChange={(e) => {
+                setGameTitle(e.target.value)
+              }}
+            >
+            </FormInput>
+            {createErrTitle && <Error error={errMsgTitle} />}
+            <br></br>
+          </Form>
+
           {/* Platform logos */}
           <p style={{fontWeight: 'bold'}}>Select Platform</p>
           <div style={{display: 'flex', flexDirection: 'row'}}>
@@ -87,19 +119,8 @@ const AddGameModal = () => {
               <FormCheck type="switch" checked={checkedSWITCH} onChange={()=> {setCheckedSWITCH(!checkedSWITCH)}}></FormCheck>
             </div>
           </div>
-
-          <Form>
-            <FormInput 
-              label='Game Title'
-              id='gameTitle'
-              type='text'
-              onChange={(e) => {
-                setGameTitle(e.target.value)
-              }}
-            >
-            </FormInput>
-          </Form>
-
+          {createErrPlat && <Error error={errMsgPlat} />}
+          <br></br>
           {/* Type preference */}
           <div style={{display: 'flex', flexDirection: 'row'}}>
             <div style={{width: '120px'}}>
@@ -109,16 +130,15 @@ const AddGameModal = () => {
               <FormCheck label='Digital' defaultChecked={true} onChange={()=> {setCheckedDigital(!checkedPhysical)}}></FormCheck>
             </div>
           </div>  
+
+          
         </Modal.Body>
 
         <Modal.Footer className="justify-content-between">
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button id="createQuizButton" variant="primary" onClick={() => {
-            SaveGameToMemory()
-            handleClose()
-            }}>
+          <Button id="createQuizButton" variant="primary" onClick={SaveGameToMemory}>
             Add
           </Button>
         </Modal.Footer>
