@@ -23,6 +23,8 @@ const AddGameModal = () => {
   const [errMsgTitle, setErrMsgTitle] = useState('');
   const [createErrPlat, setErrPlat] = useState(false);
   const [errMsgPlat, setErrMsgPlat] = useState('');
+  const [createErrPref, setErrPref] = useState(false);
+  const [errMsgPref, setErrMsgPref] = useState('');
 
   const [gameTitle, setGameTitle] = useState('')
   const handleClose = () => {
@@ -32,6 +34,8 @@ const AddGameModal = () => {
     setShow(false)
     setErrTitle(false)
     setErrPlat(false)
+    setErrPref(false)
+    setGameTitle('')
   };
   const handleShow = () => setShow(true);
   
@@ -46,6 +50,11 @@ const AddGameModal = () => {
     if (!checkedPS5 && !checkedPS4 && !checkedSWITCH) {
       setErrPlat(true);
       setErrMsgPlat('Please select a platform.');
+      return;
+    }
+    if(!checkedPhysical && !checkedDigital) {
+      setErrPref(true);
+      setErrMsgPref('Please select at least one preference.');
       return;
     }
 
@@ -130,6 +139,7 @@ const AddGameModal = () => {
               <FormCheck label='Digital' defaultChecked={true} onChange={()=> {setCheckedDigital(!checkedPhysical)}}></FormCheck>
             </div>
           </div>  
+          {createErrPref && <Error error={errMsgPref} />}
 
           
         </Modal.Body>
