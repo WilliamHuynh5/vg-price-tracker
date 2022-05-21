@@ -8,6 +8,8 @@ import { fontBold, font, backgroundGrey } from '../inlineStyles';
 import PS5Logo from '../assets/ps5-logo.png'
 import PS4Logo from '../assets/ps4-logo.png'
 import SWITCHLogo from '../assets/switch-logo.png'
+import NinLogo from '../assets/nintendo-logo.png'
+import PSLogo from '../assets/ps-logo.png'
 
 const GameCard = (props) => {
   const { getters, setters } = useContextHook(Context);
@@ -21,31 +23,19 @@ const GameCard = (props) => {
   const platformIcons = []
   if (platformPref.includes('ps5')) {
     const platIcon = (
-      <Card.Img
-        variant="top"
-        style={{ width: '3rem', height: 'auto' }}
-        src={PS5Logo}
-      />
+      <img style ={{width: '22px', marginLeft: '1rem', marginTop: '0.5rem'}} src = {PS5Logo}/>
     );
     platformIcons.push(platIcon)
   }
   if (platformPref.includes('ps4')) {
     const platIcon = (
-      <Card.Img
-        variant="top"
-        style={{ width: '3rem', height: 'auto' }}
-        src={PS4Logo}
-      />
+      <img style ={{width: '30px', marginLeft: '1rem', marginTop: '0.5rem'}} src = {PS4Logo}/>
     );
     platformIcons.push(platIcon)
   }
   if (platformPref.includes('switch')) {
     const platIcon = (
-      <Card.Img
-        variant="top"
-        style={{ width: '3rem', height: 'auto' }}
-        src={SWITCHLogo}
-      />
+      <img style ={{width: '30px', marginLeft: '1rem', marginTop: '0.5rem'}} src = {SWITCHLogo}/>
     );
     platformIcons.push(platIcon)
   }
@@ -66,7 +56,7 @@ const GameCard = (props) => {
             style={{
               width: '18rem',
               height: '10rem',
-              textAlign: 'center',
+              textAlign: 'left',
             }}
           >
             <Card.Img
@@ -77,9 +67,11 @@ const GameCard = (props) => {
               }}
               src={gameThumbnail}
             />
+            {platformIcons}
+            
           </div>
           <div>
-            <Card.Body style={{textAlign: 'left'}}>
+            <Card.Body style={{textAlign: 'left', marginTop: '1rem'}}>
               <Card.Title style={fontBold}>{gameTitle}</Card.Title>
               <br></br>
               {/* <Card.Text>{'✅ ' + questionDesc}</Card.Text>
