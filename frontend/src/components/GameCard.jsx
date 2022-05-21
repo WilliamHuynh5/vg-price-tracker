@@ -51,43 +51,52 @@ const GameCard = (props) => {
   }
 
   return (
-    <Card
-      style={{ width: '70vw', marginBottom: '1vw', ...font }}
-      className="text-center mx-auto"
-      id={props.id}
-    >
-      <div className="row no-gutters">
-        <div className="col-md-1">
-          <div className="row-md-1">
-            {platformIcons}
+<>
+      <Card
+        style={{
+          width: '18rem',
+          marginBottom: '1vw',
+          marginTop: '2rem',
+          marginLeft: '2rem'
+        }}
+        id={props.id}
+      >
+        <div className="row no-gutters">
+          <div
+            style={{
+              width: '18rem',
+              height: '10rem',
+              textAlign: 'center',
+            }}
+          >
+            <Card.Img
+              variant="top"
+              style={{
+                width: '286px',
+                height: '150px',
+              }}
+              src={gameThumbnail}
+            />
+          </div>
+          <div>
+            <Card.Body style={{textAlign: 'left'}}>
+              <Card.Title style={fontBold}>{gameTitle}</Card.Title>
+              <br></br>
+              {/* <Card.Text>{'✅ ' + questionDesc}</Card.Text>
+              <Card.Text>{'⏰ ' + questionTime + ' seconds'}</Card.Text> */}
+            </Card.Body>
+          </div>
+          <div
+            style={{
+              width: '18rem',
+              height: '3rem',
+              marginLeft: '0.7rem',
+            }}
+          >
           </div>
         </div>
-        <div className="col-md-1">
-          <Card.Img
-            variant="top"
-            style={{ width: '15rem', height: 'auto' }}
-            className="col-6"
-            src={gameThumbnail}
-          />
-        </div>
-        <div className="col-md-10">
-          <Card.Body>
-            <Card.Title style={fontBold}>{gameTitle}</Card.Title>
-            {/* <Card.Text> {numQuestions}</Card.Text>
-            <Card.Text>{quizTime}</Card.Text> */}
-          </Card.Body>
-        </div>
-        <div
-          style={{
-            width: '70vw',
-            height: '3rem',
-            marginLeft: '0.7rem',
-            ...backgroundGrey,
-          }}
-        >
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </>
   );
 };
 

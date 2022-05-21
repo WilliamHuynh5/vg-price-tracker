@@ -51,7 +51,15 @@ const HomePage = () => {
         <AddGameModal></AddGameModal>
       </div>
       </DefaultHeader>
-      <div>{gamesList}</div>
+      <div 
+        style={{
+          gap: '2.5rem',
+          width: 'fit-content',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap'
+        }}>{gamesList}
+      </div>
     </>
 
   )
