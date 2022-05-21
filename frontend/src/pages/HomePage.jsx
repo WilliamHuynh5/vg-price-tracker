@@ -20,8 +20,9 @@ const HomePage = () => {
           console.log(resp)
           const gameCard = (
             <GameCard
-              gameTitle={gameTitle}
-              gameThumbnail={''}
+              id={resp.id}
+              gameTitle={resp.name}
+              gameThumbnail={resp.background_image}
               platformPref={gameDetail.platforms}
               physicalPref={gameDetail.physical}
               digitalPref={gameDetail.digital}

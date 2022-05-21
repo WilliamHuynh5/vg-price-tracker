@@ -54,8 +54,7 @@ app.post("/game/query/title", async (req, res) => {
   if (details.platforms.includes('ps5')){
     qPlatforms += (ps5 + ',')
     pPlatforms += p_ps
-  }
-  if (details.platforms.includes('ps4')){
+  } else if (details.platforms.includes('ps4')){
     qPlatforms += (ps4 + ',')
     pPlatforms += p_ps
   }
@@ -64,19 +63,19 @@ app.post("/game/query/title", async (req, res) => {
     pPlatforms += p_sw
   }
 
-  qPlatforms = qPlatforms.slice(0, -1)
-  console.log(qPlatforms)
-  console.log(pPlatforms)
   const options = {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
   };
-  await fetch('https://api.rawg.io/api/games?search=' + title + '&search_precise=true' + '&parent_platforms=' + pPlatforms + '&platforms=' + qPlatforms + '&key=' + apiKey, options)
+  await fetch('https://api.rawg.io/api/games?search=' + title + '&search_precise=true' + 
+  '&parent_platforms=' + pPlatforms + 
+  '&platforms=' + qPlatforms + 
+  '&key=' + apiKey, options)
+
   .then(resp => resp.json())
   .then(({results}) => {
-    console.log(results)
     res.json(results[0])
   })
 });
