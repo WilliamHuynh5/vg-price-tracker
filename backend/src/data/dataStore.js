@@ -24,6 +24,8 @@ export function set_cached_games(data) {
   save_data('./cached_games.json', cached_games);
 }
 
+// JSON Reading stuff
+
 export function save_data(file_path, data) {
   fs.writeFileSync(file_path, data);
 }

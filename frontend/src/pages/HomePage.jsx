@@ -8,20 +8,18 @@ import GameCard from "../components/GameCard";
 const HomePage = () => {
   const { getters, setters } = useContextHook(Context);
   const [gamesList, setGamesList] = useState([]);
-  const gameCardList = useRef([])
-
+  const gameCardList = [];
+  
   useEffect(() => {
-    console.log("fetching games!")
-    const fetchData = async () => {
-      const data = await apiCall('data/get/tracked/games', 'GET', {});
-      //try {
+    const ac = new AbortController();
+    // If there is a new quiz, we want to render it
+    if (getters.hasNewGame || gamesList.length === 0) {
+      (async () => {
+        const data = await apiCall('data/get/tracked/games', 'GET', {});
         console.log(data);
         setters.setTrackedGames(data);
         for (const [gameTitle, gameDetail] of Object.entries(data)) {
-          // if (gameTitle in getters.trackedGames){
-          //   console.log("skipping " + gameTitle);
-          //   continue
-          // }
+  
           const resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'gameDetail': gameDetail});
           console.log(resp);
           const gameCard = (
@@ -35,25 +33,24 @@ const HomePage = () => {
               digitalPref={gameDetail.digital}
             />
           );
-          // const displayedGames = getters.displayedGames;
-          if (!gameCardList.current.includes(gameCard)) {
-            gameCardList.current.push(gameCard);
-            console.log("pushed!")
-            // displayedGames.push
+          let addFlag = true;
+          for (const x of gameCardList) {
+            if (x.key === gameCard.key) {
+              addFlag = false;
+            }
           }
-          
+          if (addFlag) {
+            gameCardList.push(gameCard);
+            console.log("pushed!")
+          }
         }
         setGamesList(gameCardList);
-      //}
-      // catch {
-      //   console.log("fail!")
-      //   setters.setTrackedGames({})
-      // }
+        setters.setHasNewGame(false);
+      })();
     }
-    fetchData()
-    setters.setHasNewGame(false);
-  }, [getters.hasNewGame])  
-  
+    return () => ac.abort();
+  }, [getters.hasNewGame]);
+
   return (
     <>
       <DefaultHeader>
@@ -68,11 +65,11 @@ const HomePage = () => {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap'
-        }}>{gamesList.current}
+        }}>{gamesList}
       </div>
     </>
 
-  )
-}
+  );
+};
 
 export default HomePage
