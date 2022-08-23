@@ -75,7 +75,8 @@ const AddGameModal = () => {
     currentTrackedGames[gameTitle] = gameDict[gameTitle]
     setters.setTrackedGames(currentTrackedGames)
 
-    apiCall("util/dump", 'POST', currentTrackedGames)
+    apiCall("data/set/tracked/games", 'POST', currentTrackedGames)
+    setters.setHasNewGame(true)
     handleClose()
   }
 

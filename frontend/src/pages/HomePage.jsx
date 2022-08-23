@@ -1,4 +1,4 @@
-import {React, useEffect, useState} from "react";
+import {React, useEffect, useState, useRef} from "react";
 import DefaultHeader from "../components/Header";
 import AddGameModal from "../components/AddGameModal";
 import { apiCall } from "../helpers/fetch_api";
@@ -8,18 +8,25 @@ import GameCard from "../components/GameCard";
 const HomePage = () => {
   const { getters, setters } = useContextHook(Context);
   const [gamesList, setGamesList] = useState([]);
-  const gameCardList = []
+  const gameCardList = useRef([])
+
   useEffect(() => {
-    console.log("i fire once")
+    console.log("fetching games!")
     const fetchData = async () => {
-      const data = await apiCall('util/fetch', 'GET', {});
-      try {
-        setters.setTrackedGames(data)
+      const data = await apiCall('data/get/tracked/games', 'GET', {});
+      //try {
+        console.log(data);
+        setters.setTrackedGames(data);
         for (const [gameTitle, gameDetail] of Object.entries(data)) {
-          const resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'gameDetail': gameDetail})
-          console.log(resp)
+          // if (gameTitle in getters.trackedGames){
+          //   console.log("skipping " + gameTitle);
+          //   continue
+          // }
+          const resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'gameDetail': gameDetail});
+          console.log(resp);
           const gameCard = (
             <GameCard
+              key={resp.id}
               id={resp.id}
               gameTitle={resp.name}
               gameThumbnail={resp.background_image}
@@ -28,22 +35,25 @@ const HomePage = () => {
               digitalPref={gameDetail.digital}
             />
           );
-          gameCardList.push(gameCard);
+          // const displayedGames = getters.displayedGames;
+          if (!gameCardList.current.includes(gameCard)) {
+            gameCardList.current.push(gameCard);
+            console.log("pushed!")
+            // displayedGames.push
+          }
+          
         }
         setGamesList(gameCardList);
-      }
-      catch {
-        setters.setTrackedGames({})
-      }
+      //}
+      // catch {
+      //   console.log("fail!")
+      //   setters.setTrackedGames({})
+      // }
     }
     fetchData()
-  }, [])  
+    setters.setHasNewGame(false);
+  }, [getters.hasNewGame])  
   
-
-
-  
- 
-
   return (
     <>
       <DefaultHeader>
@@ -58,7 +68,7 @@ const HomePage = () => {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap'
-        }}>{gamesList}
+        }}>{gamesList.current}
       </div>
     </>
 

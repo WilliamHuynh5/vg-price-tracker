@@ -7,12 +7,18 @@ import { Context } from './helpers/context';
 
 function App() {
   const [trackedGames, setTrackedGames] = useState({});
+  const [displayedGames, setDisplayedGames] = useState([]);
+  const [hasNewGame, setHasNewGame] = useState(false);
 
   const getters = {
-    trackedGames
+    trackedGames,
+    hasNewGame,
+    displayedGames
   };
   const setters = {
-    setTrackedGames
+    setTrackedGames,
+    setHasNewGame,
+    setDisplayedGames
   };
 
   return (
