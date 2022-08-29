@@ -1,11 +1,16 @@
 import fs from 'fs';
 let tracked_games = {};
-let cached_games = {};
+let data = {
+  users: [],
+  games: []
+};
 const tracked_games_path = 'src/data/tracked_games.json';
+const data_path = 'src/data/data.json';
+
+// Getters and setters for games
 
 export function get_tracked_games() {
   tracked_games = load_data(tracked_games_path);
-  console.log(tracked_games);
   return tracked_games;
 }
 
@@ -14,14 +19,16 @@ export function set_tracked_games(data) {
   save_data(tracked_games_path, tracked_games);
 }
 
-export function get_cached_games() {
-  cached_games = load_data('./cached_games.json');
-  return cached_games;
+// Getters and setters for data
+
+export function get_data() {
+  data = load_data(data_path);
+  return data;
 }
 
-export function set_cached_games(data) {
-  cached_games = data;
-  save_data('./cached_games.json', cached_games);
+export function set_data(newData) {
+  data = newData;
+  save_data(data_path, JSON.stringify(data));
 }
 
 // JSON Reading stuff

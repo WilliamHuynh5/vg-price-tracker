@@ -59,25 +59,29 @@ const AddGameModal = () => {
       return;
     }
 
-    gameDict[gameTitle] = {'platforms': [], 'physical': checkedPhysical, 'digital': checkedDigital}
+    gameDict[gameTitle] = {'platforms': [], 'physical': checkedPhysical, 'digital': checkedDigital};
 
     if (checkedPS5) {
-      gameDict[gameTitle].platforms.push('ps5')
+      gameDict[gameTitle].platforms.push('ps5');
     }
     if (checkedPS4) {
-      gameDict[gameTitle].platforms.push('ps4')
+      gameDict[gameTitle].platforms.push('ps4');
     }
     if (checkedSWITCH) {
-      gameDict[gameTitle].platforms.push('switch')
+      gameDict[gameTitle].platforms.push('switch');
     }
+    
+    const token = getters.userToken.token;
+    const trackedGames = getters.trackedGames;
+    trackedGames[gameTitle] = gameDict[gameTitle];
+    setters.setTrackedGames(trackedGames);
 
-    const currentTrackedGames = getters.trackedGames
-    currentTrackedGames[gameTitle] = gameDict[gameTitle]
-    setters.setTrackedGames(currentTrackedGames)
-
-    apiCall("data/set/tracked/games", 'POST', currentTrackedGames)
-    setters.setHasNewGame(true)
-    handleClose()
+    await apiCall("user/add/games", 'POST', {
+      token,
+      trackedGames
+    });
+    setters.setHasNewGame(true);
+    handleClose();
   }
 
   return (

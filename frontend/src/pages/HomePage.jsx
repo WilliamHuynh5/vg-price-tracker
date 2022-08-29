@@ -5,6 +5,8 @@ import { apiCall } from "../helpers/fetch_api";
 import { useContextHook, Context } from '../helpers/context';
 import GameCard from "../components/GameCard";
 import LoadingSpinner from "../components/LoadingSpinner";
+import BtnLogOut from '../components/LogOutButton';
+
 
 const HomePage = () => {
   const { getters, setters } = useContextHook(Context);
@@ -18,8 +20,12 @@ const HomePage = () => {
     if (getters.hasNewGame || gamesList.length === 0) {
       (async () => {
         setIsLoading(true);
-        const data = await apiCall('data/get/tracked/games', 'GET', {});
-        console.log(data);
+        const data = await apiCall('user/get/games', 'GET', getters.userToken);
+        if ("error" in data) {
+          setters.setHasNewGame(false);
+          setIsLoading(false);
+          return () => ac.abort();
+        }
         setters.setTrackedGames(data);
         for (const [gameTitle, gameDetail] of Object.entries(data)) {
   
@@ -44,7 +50,6 @@ const HomePage = () => {
           }
           if (addFlag) {
             gameCardList.push(gameCard);
-            console.log("pushed!")
           }
         }
         setGamesList(gameCardList);
@@ -70,9 +75,12 @@ const HomePage = () => {
   return (
     <>
       <DefaultHeader>
-      <div>
-        <AddGameModal disabled={isLoading}></AddGameModal>
-      </div>
+      
+        <div>
+          <AddGameModal></AddGameModal>
+          <BtnLogOut /> 
+        </div>
+      
       </DefaultHeader>
       {isLoading ? <LoadingSpinner /> : gameCardsRender}
 
