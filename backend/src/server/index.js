@@ -38,7 +38,7 @@ app.post("/user/add/games", async (req, res) => {
 });
 
 app.get("/user/get/games", async (req, res) => {
-  const token = req.query.token;
+  const token = req.headers.token;
   res.json(getGames(token));
 });
 

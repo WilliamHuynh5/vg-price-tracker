@@ -1,7 +1,1 @@
-{
-  "users": [
-  ],
-  "games": [],
-  "sessions": [
-  ]
-}
+{"users":[{"uId":0,"email":"betty@email.com","password":"wasd","tracked_games":{"dark souls 3":{"platforms":["ps4"],"physical":true,"digital":true}}},{"uId":0,"email":"betty@email.com","password":"wasd","tracked_games":{}},{"uId":0,"email":"bill@gmail.com","password":"wasd","tracked_games":{}}],"games":[],"sessions":[{"token":"e649273b-723d-4d80-83be-bcfb02eefbc6","uId":0}]}

@@ -10,6 +10,7 @@ export const apiCall = async (path, method, body, token) => {
     method: method,
     headers: {
       'Content-Type': 'application/json',
+      'token': token
       // We want the user token only for the routes containing logout, quiz
       // or session. In every other case, we don't need any token.
       // Authorization: `Bearer ${token ? token.token : undefined}`,

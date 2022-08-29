@@ -20,8 +20,9 @@ const HomePage = () => {
     if (getters.hasNewGame || gamesList.length === 0) {
       (async () => {
         setIsLoading(true);
-        const data = await apiCall('user/get/games', 'GET', getters.userToken);
+        const data = await apiCall('user/get/games', 'GET', {}, getters.userToken.token);
         if ("error" in data) {
+          console.log("fail")
           setters.setHasNewGame(false);
           setIsLoading(false);
           return () => ac.abort();
