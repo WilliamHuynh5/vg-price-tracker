@@ -17,30 +17,53 @@ const HomePage = () => {
   useEffect(() => {
     const ac = new AbortController();
     // If there is a new quiz, we want to render it
+
     if (getters.hasNewGame || gamesList.length === 0) {
       (async () => {
         setIsLoading(true);
+        // console.log(getters.userToken);
         const data = await apiCall('user/get/games', 'GET', {}, getters.userToken.token);
-        if ("error" in data) {
-          console.log("fail")
-          setters.setHasNewGame(false);
-          setIsLoading(false);
-          return () => ac.abort();
+        // console.log(data);
+        // if ("error" in data) {
+        //   setters.setHasNewGame(false);
+        //   setIsLoading(false);
+        //   return () => ac.abort();
+        // }
+        // console.log(getters.trackedGames);
+        if (getters.trackedGames.length === 0) {
+          setters.setTrackedGames(data.trackedGames);
         }
-        setters.setTrackedGames(data);
-        for (const [gameTitle, gameDetail] of Object.entries(data)) {
-  
-          const resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'gameDetail': gameDetail});
-          console.log(resp);
+        
+        for (const game of getters.trackedGames) {
+          console.log(game);
+          const gameTitle = game.gameTitle;
+          const platforms = game.platforms;
+          const physicalFlag = game.physical;
+          const digitalFlag = game.digital;
+          console.log(gameTitle);
+          console.log(platforms);
+          console.log("starting!")
+          let resp = {};
+          try {
+            resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'gameDetail': platforms});
+          } catch {
+            continue;
+          }
+          await apiCall("user/add/game", 'POST', {
+            resp,
+            platforms,
+            physicalFlag,
+            digitalFlag
+          }, getters.userToken.token);
           const gameCard = (
             <GameCard
               key={resp.id}
               id={resp.id}
               gameTitle={resp.name}
               gameThumbnail={resp.background_image}
-              platformPref={gameDetail.platforms}
-              physicalPref={gameDetail.physical}
-              digitalPref={gameDetail.digital}
+              platformPref={platforms}
+              physicalPref={physicalFlag}
+              digitalPref={digitalFlag}
             />
           );
           let addFlag = true;

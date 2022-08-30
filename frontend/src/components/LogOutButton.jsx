@@ -5,12 +5,14 @@ import { useContextHook, Context } from '../helpers/context';
 import { useNavigate } from 'react-router-dom';
 
 const BtnLogOut = () => {
-  const { getters } = useContextHook(Context);
+  const { getters, setters } = useContextHook(Context);
   const navigate = useNavigate();
 
   const logout = async () => {
     const token = getters.userToken.token;
     await apiCall('auth/logout', 'POST', {token});
+    setters.setUserToken(undefined);
+    setters.setTrackedGames({});
     navigate('/auth/login');
   };
 

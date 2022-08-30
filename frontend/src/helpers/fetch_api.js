@@ -11,16 +11,26 @@ export const apiCall = async (path, method, body, token) => {
     headers: {
       'Content-Type': 'application/json',
       'token': token
-      // We want the user token only for the routes containing logout, quiz
-      // or session. In every other case, we don't need any token.
-      // Authorization: `Bearer ${token ? token.token : undefined}`,
     },
     body: method === 'GET' ? undefined : JSON.stringify(body),
   };
   try {
-    const response = await fetch(`http://localhost:5001/${path}`, init);
+    const response = await fetchWithTimeout(`http://localhost:5001/${path}`, init);
     return response.json();
   } catch (err) {
     console.log(err);
   }
 };
+
+async function fetchWithTimeout(resource, options = {}) {
+  const { timeout = 8000 } = options;
+  
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal  
+  });
+  clearTimeout(id);
+  return response;
+}

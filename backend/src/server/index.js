@@ -5,7 +5,7 @@ import { PORT } from "./config.js";
 import { get_tracked_games, set_tracked_games } from "../data/dataStore.js";
 import { query_game_title } from "../query/game.js";
 import { auth_login, auth_logout, auth_register } from '../auth/auth.js';
-import { addGames, getGames } from '../user/user.js';
+import { addGame, getGames, removeGame } from '../user/user.js';
 
 const app = express()
 
@@ -31,15 +31,26 @@ app.post("/auth/logout", async (req, res) => {
   res.json(auth_logout(token));
 });
 
-app.post("/user/add/games", async (req, res) => {
-  const token = req.body.token;
-  const trackedGames = req.body.trackedGames;
-  res.json(addGames(token, trackedGames));
+app.post("/user/add/game", async (req, res) => {
+  const token = req.headers.token;
+  const gameObj = req.body.resp;
+  const platforms = req.body.platforms;
+  const physicalFlag = req.body.physicalFlag;
+  const digitalFlag = req.body.digitalFlag;
+
+  res.json(addGame(token, gameObj, platforms, physicalFlag, digitalFlag));
 });
 
 app.get("/user/get/games", async (req, res) => {
   const token = req.headers.token;
   res.json(getGames(token));
+});
+
+app.delete("/user/delete/game", async (req, res) => {
+  const token = req.headers.token;
+  const gameTitle = req.query.gameTitle;
+  console.log("here: " + gameTitle);
+  res.json(removeGame(token, gameTitle));
 });
 
 app.get("/data/get/tracked/games", (req, res) => {
@@ -64,6 +75,7 @@ app.post("/data/set/cached/games", (req, res) => {
 app.post("/game/query/title", async (req, res) => {
   const title = req.body.gameTitle;
   const details = req.body.gameDetail;
+  console.log(title);
   query_game_title(title, details).then(response => res.json(response));
 });
 

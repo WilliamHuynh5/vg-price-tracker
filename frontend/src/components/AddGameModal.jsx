@@ -42,7 +42,6 @@ const AddGameModal = () => {
   
   const DumpToJSON = async () => {
 
-    const gameDict = {}
     if (gameTitle === '') {
       setErrTitle(true);
       setErrMsgTitle('Please enter a game title.');
@@ -58,28 +57,23 @@ const AddGameModal = () => {
       setErrMsgPref('Please select at least one preference.');
       return;
     }
-
-    gameDict[gameTitle] = {'platforms': [], 'physical': checkedPhysical, 'digital': checkedDigital};
+    const gameTitleLowered = gameTitle.toLowerCase();
+    const gameDict = {'gameTitle': gameTitleLowered, 'platforms': [], 'physical': checkedPhysical, 'digital': checkedDigital};
 
     if (checkedPS5) {
-      gameDict[gameTitle].platforms.push('ps5');
+      gameDict.platforms.push('ps5');
     }
     if (checkedPS4) {
-      gameDict[gameTitle].platforms.push('ps4');
+      gameDict.platforms.push('ps4');
     }
     if (checkedSWITCH) {
-      gameDict[gameTitle].platforms.push('switch');
+      gameDict.platforms.push('switch');
     }
     
-    const token = getters.userToken.token;
     const trackedGames = getters.trackedGames;
-    trackedGames[gameTitle] = gameDict[gameTitle];
+    trackedGames.push(gameDict);
     setters.setTrackedGames(trackedGames);
 
-    await apiCall("user/add/games", 'POST', {
-      token,
-      trackedGames
-    });
     setters.setHasNewGame(true);
     handleClose();
   }

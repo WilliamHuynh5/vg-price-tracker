@@ -1,9 +1,8 @@
 import { get_data, set_data } from "../data/dataStore.js";
 
-export function addGames (token, trackedGames) {
+export function addGame(token, gameObj, platforms, physicalFlag, digitalFlag) {
   const data = get_data();
-  
-  // get token from user
+
   let uId = -1;
   
   for (const session of data.sessions) {
@@ -16,10 +15,48 @@ export function addGames (token, trackedGames) {
     return {error: "error"};
   }
   
+  const newGameObj = {
+    id: gameObj.id,
+    gameTitle: gameObj.name,
+    gameThumbnail: gameObj.background_image,
+    platformPref: platforms,
+    physicalPref: physicalFlag,
+    digitalPref: digitalFlag
+  }
+  
   for (let i = 0; i < data.users.length; i++) {
     if (data.users[i].uId === uId) {
-      data.users[i].tracked_games = trackedGames;
-      break;
+      if (!data.users[i].tracked_games.filter(e => e.id ===  gameObj.id).length > 0) {
+        data.users[i].tracked_games.push(newGameObj);
+      }
+    }
+  }
+  
+  set_data(data);
+  
+  return {};
+  
+}
+
+export function getGames (token) {
+  const data = get_data();
+  // get token from user
+  let uId = -1;
+  
+  for (const session of data.sessions) {
+    if (session.token === token) {
+      uId = session.uId;
+    }
+  }
+
+  let trackedGames = [];
+  if (uId === -1) {
+    return {error: "error"};
+  }
+  for (const user of data.users) {
+    if (user.uId == uId) {
+      trackedGames = user.tracked_games;
+      return {trackedGames: trackedGames};
     }
   }
   
@@ -28,9 +65,8 @@ export function addGames (token, trackedGames) {
   return {};
 }
 
-export function getGames (token) {
+export function removeGame(token, gameId) {
   const data = get_data();
-  
   // get token from user
   let uId = -1;
   
@@ -39,19 +75,15 @@ export function getGames (token) {
       uId = session.uId;
     }
   }
-
   if (uId === -1) {
-    return {error: "error"};
+    return {error: "failed to delete"};
   }
-  let trackedGames = {};
-  for (const user of data.users) {
-    if (user.uId == uId) {
-      trackedGames = user.tracked_games;
-      return trackedGames;
+  
+  for (let i = 0; i < data.users.length; i++) {
+    if (data.users[i].uId === uId) {
+      console.log(data.users[i].tracked_games);
+      delete(data.users[i].tracked_games[gameTitle]);
     }
   }
-  
-  set_data(data);
-  
   return {};
 }

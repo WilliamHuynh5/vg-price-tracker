@@ -1,12 +1,13 @@
 import { get_data, set_data } from "../data/dataStore.js";
-import * as EmailValidator from 'email-validator';
+import { registerValidityCheck, getNextUID } from "./auth_helper.js";
 import { v4 as uuidv4 } from 'uuid';
+import { generate, verify } from "password-hash";
 
 export function auth_login(email, password) {
   const data = get_data();
     
   for (const user of data.users) {
-    if (user.email == email && user.password == password) {
+    if (user.email === email && verify(password, user.password) === true) {
       const token = uuidv4();
       const newSession = {token: token, uId: user.uId};
       
@@ -21,35 +22,23 @@ export function auth_login(email, password) {
 
 export function auth_register(email, password, confirmPassword) {
   const data = get_data();
-  const email_valid = EmailValidator.validate(email);
   
-  if (email_valid == false) {
-    return {error: "Error: Please enter a valid email!"}; 
+  const validityResponse = registerValidityCheck(email, password, confirmPassword)
+  if ('error' in validityResponse) {
+    return validityResponse;
   }
   
-  if (password != confirmPassword) {
-    return {error: "Error: Passwords do not match!"};
-  }
-  
-  let u_id = -1;
-  
-  if (data.users[-1] === undefined) {
-    u_id = 0;
-  } else {
-    u_id = data.users[-1].uId;
-    u_id++;
-  }
+  const uId = getNextUID();
 
-  
   const new_user = {
-    uId: u_id,
+    uId: uId,
     email: email,
-    password: password,
-    tracked_games: {}
+    password: generate(password),
+    tracked_games: []
   } 
   
   const token = uuidv4();
-  const newSession = {token: token, uId: u_id};
+  const newSession = {token: token, uId: uId};
   
   data.users.push(new_user);
   data.sessions.push(newSession);

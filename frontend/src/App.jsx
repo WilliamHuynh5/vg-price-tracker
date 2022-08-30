@@ -8,7 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 
 function App() {
-  const [trackedGames, setTrackedGames] = useState({});
+  const [trackedGames, setTrackedGames] = useState([]);
   const [displayedGames, setDisplayedGames] = useState([]);
   const [hasNewGame, setHasNewGame] = useState(false);
   const [userToken, setUserToken] = useState(undefined);

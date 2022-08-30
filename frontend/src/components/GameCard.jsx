@@ -10,6 +10,7 @@ import PS4Logo from '../assets/ps4-logo.png'
 import SWITCHLogo from '../assets/switch-logo.png'
 import NinLogo from '../assets/nintendo-logo.png'
 import PSLogo from '../assets/ps-logo.png'
+import DeleteGameModal from './DeleteGameModal';
 
 const GameCard = (props) => {
   const { getters, setters } = useContextHook(Context);
@@ -78,6 +79,7 @@ const GameCard = (props) => {
               <Card.Text>{'⏰ ' + questionTime + ' seconds'}</Card.Text> */}
             </Card.Body>
           </div>
+          <DeleteGameModal gameTitle={gameTitle}></DeleteGameModal>
           <div
             style={{
               width: '18rem',
