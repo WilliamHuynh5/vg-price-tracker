@@ -42,7 +42,6 @@ const HomePage = () => {
           let resp = game;
           if (skipFlag === false) {
             try {
-              console.log("calling APi!!!! " + game.gameTitle);
               resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'platforms': platforms});
               await apiCall("user/add/game", 'POST', {
                 resp,

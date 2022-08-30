@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { fontBold } from '../inlineStyles';
 
 const DeleteGameModal = (props) => {
-  const gameTitle = props.gameTitle;
+  const gameId = props.gameId;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(false);
@@ -16,7 +16,7 @@ const DeleteGameModal = (props) => {
   const deleteQuiz = async () => {
     const response = await apiCall(
       'user/delete/game?' + new URLSearchParams({
-        gameTitle: gameTitle,
+        gameId: gameId,
     }),
       'DELETE',
       {},
@@ -26,6 +26,7 @@ const DeleteGameModal = (props) => {
       console.log(response);
     } else {
       handleClose();
+      setters.setTrackedGames([]);
       setters.setHasNewGame(true);
     }
   };
@@ -78,7 +79,7 @@ const DeleteGameModal = (props) => {
 };
 
 DeleteGameModal.propTypes = {
-  gameTitle: PropTypes.string,
+  gameTitle: PropTypes.number,
 };
 
 export default DeleteGameModal;

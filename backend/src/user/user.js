@@ -67,6 +67,7 @@ export function getGames (token) {
 
 export function removeGame(token, gameId) {
   const data = get_data();
+  console.log(gameId);
   // get token from user
   let uId = -1;
   
@@ -78,12 +79,23 @@ export function removeGame(token, gameId) {
   if (uId === -1) {
     return {error: "failed to delete"};
   }
-  
+  let elemToRemove = -1;
+  let userIndex = -1;
   for (let i = 0; i < data.users.length; i++) {
     if (data.users[i].uId === uId) {
-      console.log(data.users[i].tracked_games);
-      delete(data.users[i].tracked_games[gameTitle]);
+      userIndex = i;
+      for (let j = 0; j < data.users[i].tracked_games.length; j++) {
+        console.log(data.users[i].tracked_games[j].id);
+        if (data.users[i].tracked_games[j].id === gameId) {
+          elemToRemove = j;
+          i = data.users.length;
+          break;
+        }
+      }
     }
   }
+  console.log(userIndex + " " + elemToRemove);
+  data.users[userIndex].tracked_games.splice(elemToRemove, 1);
+  set_data(data);
   return {};
 }

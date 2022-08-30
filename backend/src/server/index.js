@@ -48,9 +48,9 @@ app.get("/user/get/games", async (req, res) => {
 
 app.delete("/user/delete/game", async (req, res) => {
   const token = req.headers.token;
-  const gameTitle = req.query.gameTitle;
-  console.log("here: " + gameTitle);
-  res.json(removeGame(token, gameTitle));
+  const gameId = req.query.gameId;
+  console.log("here: " + gameId);
+  res.json(removeGame(token, parseInt(gameId)));
 });
 
 app.get("/data/get/tracked/games", (req, res) => {
