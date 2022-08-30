@@ -17,8 +17,8 @@ export function addGame(token, gameObj, platforms, physicalFlag, digitalFlag) {
   
   const newGameObj = {
     id: gameObj.id,
-    gameTitle: gameObj.name,
-    gameThumbnail: gameObj.background_image,
+    name: gameObj.name,
+    background_image: gameObj.background_image,
     platformPref: platforms,
     physicalPref: physicalFlag,
     digitalPref: digitalFlag

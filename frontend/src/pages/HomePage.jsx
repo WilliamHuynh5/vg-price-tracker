@@ -21,40 +21,42 @@ const HomePage = () => {
     if (getters.hasNewGame || gamesList.length === 0) {
       (async () => {
         setIsLoading(true);
-        // console.log(getters.userToken);
         const data = await apiCall('user/get/games', 'GET', {}, getters.userToken.token);
-        // console.log(data);
-        // if ("error" in data) {
-        //   setters.setHasNewGame(false);
-        //   setIsLoading(false);
-        //   return () => ac.abort();
-        // }
-        // console.log(getters.trackedGames);
+        let skipFlag = false;
+        let localData = [];
         if (getters.trackedGames.length === 0) {
           setters.setTrackedGames(data.trackedGames);
+          localData = data.trackedGames;
+          skipFlag = true;
+        } else {
+          localData = getters.trackedGames;
         }
-        
-        for (const game of getters.trackedGames) {
-          console.log(game);
+        for (const game of localData) {
           const gameTitle = game.gameTitle;
-          const platforms = game.platforms;
-          const physicalFlag = game.physical;
-          const digitalFlag = game.digital;
-          console.log(gameTitle);
-          console.log(platforms);
-          console.log("starting!")
-          let resp = {};
-          try {
-            resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'gameDetail': platforms});
-          } catch {
-            continue;
+          const platforms = game.platformPref;
+          const physicalFlag = game.physicalPref;
+          const digitalFlag = game.digitalPref;
+          if (game['id'] !== undefined) {
+            skipFlag = true;
           }
-          await apiCall("user/add/game", 'POST', {
-            resp,
-            platforms,
-            physicalFlag,
-            digitalFlag
-          }, getters.userToken.token);
+          let resp = game;
+          if (skipFlag === false) {
+            try {
+              console.log("calling APi!!!! " + game.gameTitle);
+              resp = await apiCall('game/query/title', 'POST', {'gameTitle': gameTitle, 'platforms': platforms});
+              await apiCall("user/add/game", 'POST', {
+                resp,
+                platforms,
+                physicalFlag,
+                digitalFlag
+              }, getters.userToken.token);
+              const updatedGames = await apiCall('user/get/games', 'GET', {}, getters.userToken.token);
+              setters.setTrackedGames(updatedGames.trackedGames);
+            } catch {
+              continue;
+            }
+          }
+
           const gameCard = (
             <GameCard
               key={resp.id}
@@ -75,6 +77,7 @@ const HomePage = () => {
           if (addFlag) {
             gameCardList.push(gameCard);
           }
+          skipFlag = false;
         }
         setGamesList(gameCardList);
         setters.setHasNewGame(false);

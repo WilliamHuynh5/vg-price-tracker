@@ -35,7 +35,6 @@ export function getNextUID() {
   let u_id = -1;
   
   if (data.users[data.users.length - 1] === undefined) {
-    console.log("undefined");
     u_id = 0;
   } else {
     u_id = data.users[data.users.length - 1].uId;

@@ -12,7 +12,7 @@ const BtnLogOut = () => {
     const token = getters.userToken.token;
     await apiCall('auth/logout', 'POST', {token});
     setters.setUserToken(undefined);
-    setters.setTrackedGames({});
+    setters.setTrackedGames([]);
     navigate('/auth/login');
   };
 

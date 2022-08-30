@@ -74,9 +74,9 @@ app.post("/data/set/cached/games", (req, res) => {
 
 app.post("/game/query/title", async (req, res) => {
   const title = req.body.gameTitle;
-  const details = req.body.gameDetail;
-  console.log(title);
-  query_game_title(title, details).then(response => res.json(response));
+  const platforms = req.body.platforms;
+  console.log("plat: " + platforms);
+  query_game_title(title, platforms).then(response => res.json(response));
 });
 
 app.listen(PORT, () => {

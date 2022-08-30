@@ -58,16 +58,16 @@ const AddGameModal = () => {
       return;
     }
     const gameTitleLowered = gameTitle.toLowerCase();
-    const gameDict = {'gameTitle': gameTitleLowered, 'platforms': [], 'physical': checkedPhysical, 'digital': checkedDigital};
+    const gameDict = {'gameTitle': gameTitleLowered, 'platformPref': [], 'physicalPref': checkedPhysical, 'digitalPref': checkedDigital};
 
     if (checkedPS5) {
-      gameDict.platforms.push('ps5');
+      gameDict.platformPref.push('ps5');
     }
     if (checkedPS4) {
-      gameDict.platforms.push('ps4');
+      gameDict.platformPref.push('ps4');
     }
     if (checkedSWITCH) {
-      gameDict.platforms.push('switch');
+      gameDict.platformPref.push('switch');
     }
     
     const trackedGames = getters.trackedGames;
