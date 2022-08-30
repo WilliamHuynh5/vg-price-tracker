@@ -67,7 +67,6 @@ export function getGames (token) {
 
 export function removeGame(token, gameId) {
   const data = get_data();
-  console.log(gameId);
   // get token from user
   let uId = -1;
   
@@ -85,7 +84,6 @@ export function removeGame(token, gameId) {
     if (data.users[i].uId === uId) {
       userIndex = i;
       for (let j = 0; j < data.users[i].tracked_games.length; j++) {
-        console.log(data.users[i].tracked_games[j].id);
         if (data.users[i].tracked_games[j].id === gameId) {
           elemToRemove = j;
           i = data.users.length;
@@ -94,7 +92,6 @@ export function removeGame(token, gameId) {
       }
     }
   }
-  console.log(userIndex + " " + elemToRemove);
   data.users[userIndex].tracked_games.splice(elemToRemove, 1);
   set_data(data);
   return {};

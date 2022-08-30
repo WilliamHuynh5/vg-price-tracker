@@ -79,7 +79,7 @@ const GameCard = (props) => {
               <Card.Text>{'⏰ ' + questionTime + ' seconds'}</Card.Text> */}
             </Card.Body>
           </div>
-          <DeleteGameModal gameId={props.id}></DeleteGameModal>
+          
           <div
             style={{
               width: '18rem',
@@ -87,6 +87,7 @@ const GameCard = (props) => {
               marginLeft: '0.7rem',
             }}
           >
+            <DeleteGameModal gameId={props.id} gameTitle={gameTitle}></DeleteGameModal>
           </div>
         </div>
       </Card>

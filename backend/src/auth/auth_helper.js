@@ -21,7 +21,6 @@ export function registerValidityCheck(email, password, confirmPassword) {
 
 export function isDuplicateEmail(email) {
   const data = get_data();
-  console.log(email);
   for (const user of data.users) {
     if (user.email === email) {
       return true;

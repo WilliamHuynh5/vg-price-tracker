@@ -26,11 +26,10 @@ function App() {
     setDisplayedGames
   };
   useEffect(() => {
+    console.log("fiiring!!!!!")
     const location = window.location.href;
     if (!getters.userToken && !location.includes('auth')) {
-      if (!location.includes('home')) {
-        window.location.href = '/auth/login';
-      }
+      window.location.href = '/auth/login';
     }
   }, [getters.userToken]);
   return (

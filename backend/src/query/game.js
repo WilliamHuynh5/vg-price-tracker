@@ -4,16 +4,16 @@ import fetch from "node-fetch";
 export function query_game_title(title, platforms) {
   let pPlatforms = '';
   let qPlatforms = '';
-  if (platforms.includes('ps5') || platforms.includes('ps4')){
+  if (platforms.includes('ps5')){
     qPlatforms += (ps5 + ',')
-    pPlatforms += p_ps
+    pPlatforms += (p_ps + ',')
   } else if (platforms.includes('ps4')){
     qPlatforms += (ps4 + ',')
-    pPlatforms += p_ps
+    pPlatforms += (p_ps + ',')
   }
   if (platforms.includes('switch')){
     qPlatforms += (nSwitch + ',')
-    pPlatforms += p_sw
+    pPlatforms += (p_sw + ',')
   }
 
   const options = {
@@ -22,6 +22,8 @@ export function query_game_title(title, platforms) {
       'Content-Type': 'application/json'
     },
   };
+  
+  console.log(pPlatforms);
   
   let res = fetch('https://api.rawg.io/api/games?search=' + title + '&search_precise=true' + 
   '&parent_platforms=' + pPlatforms + 

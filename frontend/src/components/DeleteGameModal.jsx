@@ -5,9 +5,12 @@ import { apiCall } from '../helpers/fetch_api';
 import { useContextHook, Context } from '../helpers/context';
 import PropTypes from 'prop-types';
 import { fontBold } from '../inlineStyles';
+import loadingCat from '../assets/loading-cat.jpg';
+import deleteIcon from '../assets/delete-icon.png'
 
 const DeleteGameModal = (props) => {
   const gameId = props.gameId;
+  const gameTitle = props.gameTitle;
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(false);
@@ -37,7 +40,7 @@ const DeleteGameModal = (props) => {
         variant="danger"
         onClick={handleShow}
         style={{
-          float: 'right',
+          float: 'left',
           marginTop: '0.3rem',
         }}
       >
@@ -46,7 +49,7 @@ const DeleteGameModal = (props) => {
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title className="text-danger" style={fontBold}>
-            Delete this quiz?
+            Remove game
           </Modal.Title>
         </Modal.Header>
         <Modal.Body
@@ -56,21 +59,23 @@ const DeleteGameModal = (props) => {
             fontSize: '2rem',
           }}
         >
-          {/* <img
-            src={deleteQuizIcon}
+          <img
+            src={loadingCat}
             style={{
               width: '20rem',
             }}
-          ></img> */}
+          ></img>
           <br></br>
-          Are you sure you want to delete this quiz?
+          <span style={{fontWeight:'lighter', fontSize: '1.75rem'}}>Are you sure you want to remove </span>
+          <br></br>
+          <span>{gameTitle}</span>
         </Modal.Body>
         <Modal.Footer className="justify-content-between">
           <Button variant="secondary" onClick={handleClose}>
             No, take me back!
           </Button>
           <Button variant="danger" onClick={deleteQuiz}>
-            Yes, delete the quiz!
+            Yes, remove the game!
           </Button>
         </Modal.Footer>
       </Modal>
@@ -79,7 +84,8 @@ const DeleteGameModal = (props) => {
 };
 
 DeleteGameModal.propTypes = {
-  gameTitle: PropTypes.number,
+  gameId: PropTypes.number,
+  gameTitle: PropTypes.string
 };
 
 export default DeleteGameModal;
