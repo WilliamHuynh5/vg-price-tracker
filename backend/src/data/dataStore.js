@@ -2,7 +2,7 @@ import fs from 'fs';
 let tracked_games = {};
 let data = {
   users: [],
-  games: []
+  games: {}
 };
 const tracked_games_path = 'src/data/tracked_games.json';
 const data_path = 'src/data/data.json';

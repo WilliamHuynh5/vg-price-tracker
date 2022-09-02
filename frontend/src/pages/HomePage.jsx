@@ -55,6 +55,13 @@ const HomePage = () => {
               continue;
             }
           }
+          let trackDetails = {};
+          try {
+            trackDetails = await apiCall('game/query/price', 'POST', {'gameTitle': resp.name}, getters.userToken.token);
+          } catch {
+            continue;
+          }
+
 
           const gameCard = (
             <GameCard
@@ -65,6 +72,10 @@ const HomePage = () => {
               platformPref={platforms}
               physicalPref={physicalFlag}
               digitalPref={digitalFlag}
+              date={trackDetails.date}
+              currPrice={trackDetails.currPrice}
+              allTimeLow={trackDetails.lowestPrice}
+              buyNow={trackDetails.buyNow}
             />
           );
           let addFlag = true;

@@ -11,6 +11,7 @@ import SWITCHLogo from '../assets/switch-logo.png'
 import NinLogo from '../assets/nintendo-logo.png'
 import PSLogo from '../assets/ps-logo.png'
 import DeleteGameModal from './DeleteGameModal';
+import TrackGameModal from './TrackGameModal';
 
 const GameCard = (props) => {
   const { getters, setters } = useContextHook(Context);
@@ -20,6 +21,16 @@ const GameCard = (props) => {
   const platformPref = props.platformPref;
   const physicalPref = props.physicalPref;
   const digitalPref = props.digitalPref;
+  const date = (props.date) ? props.date : '<no data>';
+  const currPrice = (props.currPrice) ? props.currPrice : '<no data>';
+  const allTimeLow = (props.allTimeLow) ? props.allTimeLow : '<no data>';
+  const buyNowLink = (props.buyNow) ? props.buyNow : '<no data>';
+  
+  
+  const currentLowest = '💲';
+  const allTimeLowest = '✨ ';
+  const lastScraped = '📅 Scraped: ';
+  const buyNow = '🛒 Buy now:';
 
   const platformIcons = []
   if (platformPref.includes('ps5')) {
@@ -55,7 +66,7 @@ const GameCard = (props) => {
         <div className="row no-gutters">
           <div
             style={{
-              width: '18rem',
+              width: '20rem',
               height: '10rem',
               textAlign: 'left',
             }}
@@ -68,15 +79,23 @@ const GameCard = (props) => {
               }}
               src={gameThumbnail}
             />
-            {platformIcons}
-            
+            {platformIcons}            
           </div>
           <div>
             <Card.Body style={{textAlign: 'left', marginTop: '1rem'}}>
               <Card.Title style={fontBold}>{gameTitle}</Card.Title>
+              <div style={{marginBottom : '1rem'}}></div>
+              {date === '<no data>' ? <span style={{fontSize: '1.05rem'}}>{currentLowest} <span style={{fontWeight:'lighter', color : 'red'}}>{currPrice}</span></span> : <span style={{fontSize: '1.05rem'}}>{currentLowest} <span style={{fontWeight:'bold', color : 'green'}}>{currPrice + ' AUD'}</span></span>}
               <br></br>
-              {/* <Card.Text>{'✅ ' + questionDesc}</Card.Text>
-              <Card.Text>{'⏰ ' + questionTime + ' seconds'}</Card.Text> */}
+              {date === '<no data>' ? <span style={{fontSize: '1.05rem'}}>{allTimeLowest} <span style={{fontWeight:'lighter', color : 'red'}}>{allTimeLow}</span></span> : <span style={{fontSize: '1.05rem'}}>{allTimeLowest} <span style={{fontWeight:'bold', color : 'orange'}}>{+ allTimeLow + ' AUD'}</span></span>}
+              <br></br>
+              <br></br>
+              {date === '<no data>' ? <span style={{fontSize: '1.05rem'}}>{'📅'} <span style={{color : 'red'}}>{date}</span></span> :<span style={{fontSize: '1.05rem'}}>{'📅'} <span style={{fontWeight:'bold'}}>{date}</span></span>}
+              <br></br>
+              {date === '<no data>' ? <span style={{fontSize: '1.05rem', color: 'red'}}>{'🛒 <no data>'}</span> : <span style={{fontSize: '1.05rem'}}>{'🛒'} <a style={{fontWeight: 'bold'}} href={buyNowLink}> Buy now! </a></span>}
+              
+              <br></br>
+              <div style={{marginBottom : '1rem'}}></div>
             </Card.Body>
           </div>
           
@@ -88,6 +107,7 @@ const GameCard = (props) => {
             }}
           >
             <DeleteGameModal gameId={props.id} gameTitle={gameTitle}></DeleteGameModal>
+            <TrackGameModal gameId={props.id} gameTitle={gameTitle} gamePlatforms={platformPref} digitalPref={digitalPref} physicalPref={physicalPref}></TrackGameModal>
           </div>
         </div>
       </Card>
@@ -101,7 +121,11 @@ GameCard.propTypes = {
   gameThumbnail: PropTypes.string,
   platformPref: PropTypes.array,
   physicalPref: PropTypes.bool,
-  digitalPref: PropTypes.bool
+  digitalPref: PropTypes.bool,
+  date: PropTypes.string,
+  currPrice: PropTypes.string,
+  allTimeLow: PropTypes.string,
+  buyNow: PropTypes.string
 };
 
 export default GameCard;

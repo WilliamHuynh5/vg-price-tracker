@@ -26,7 +26,6 @@ function App() {
     setDisplayedGames
   };
   useEffect(() => {
-    console.log("fiiring!!!!!")
     const location = window.location.href;
     if (!getters.userToken && !location.includes('auth')) {
       window.location.href = '/auth/login';

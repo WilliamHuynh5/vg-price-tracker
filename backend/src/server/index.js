@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { PORT } from "./config.js";
 import { get_tracked_games, set_tracked_games } from "../data/dataStore.js";
-import { query_game_title } from "../query/game.js";
+import { query_game_title, query_game_price, query_game_track } from "../query/game.js";
 import { auth_login, auth_logout, auth_register } from '../auth/auth.js';
 import { addGame, getGames, removeGame } from '../user/user.js';
 
@@ -76,6 +76,19 @@ app.post("/game/query/title", async (req, res) => {
   const platforms = req.body.platforms;
   console.log("plat: " + platforms);
   query_game_title(title, platforms).then(response => res.json(response));
+});
+
+app.post("/game/query/track", async (req, res) => {
+  const title = req.body.gameTitle;
+  const platforms = req.body.gamePlatforms;
+  const digFlag = req.body.digitalPref;
+  const physFlag = req.body.physicalPref;
+  query_game_track(title, platforms, digFlag, physFlag).then(response => res.json(response));
+});
+
+app.post("/game/query/price", async (req, res) => {
+  const gameTitle = req.body.gameTitle;
+  res.json(query_game_price(gameTitle));
 });
 
 app.listen(PORT, () => {
