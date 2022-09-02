@@ -84,7 +84,7 @@ export async function query_game_track(gameTitle, platforms, digFlag, physFlag) 
 export function query_game_price(gameTitle) {
   const data = get_data();
   if (data.games[gameTitle] !== undefined) {
-    return data.games
+    return data.games[gameTitle][0];
   }
   return {error: "error"};
 }

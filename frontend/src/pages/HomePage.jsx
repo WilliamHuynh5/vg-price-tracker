@@ -58,6 +58,7 @@ const HomePage = () => {
           let trackDetails = {};
           try {
             trackDetails = await apiCall('game/query/price', 'POST', {'gameTitle': resp.name}, getters.userToken.token);
+            console.log(trackDetails)
           } catch {
             continue;
           }
