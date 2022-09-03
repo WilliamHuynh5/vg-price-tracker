@@ -1,4 +1,8 @@
 import fs from 'fs';
+import { dirname } from 'path';
+const __dirname = dirname(__filename);
+console.log('here');
+console.log(__dirname);
 let tracked_games = {};
 let data = {
   users: [],

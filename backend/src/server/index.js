@@ -21,16 +21,12 @@ app.use(express.static(path.join(frontendPath, "/build")));
 
 
 app.post("/api/auth/login", async (req, res) => {
-  console.log('bodyLog')
-  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
   res.json(auth_login(email, password));
 });
 
 app.post("/api/auth/register", async (req, res) => {
-  console.log('bodyReg')
-  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
   const confirm_password = req.body.confirmPassword;
