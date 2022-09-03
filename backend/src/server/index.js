@@ -98,11 +98,11 @@ app.post("/game/query/price", async (req, res) => {
 
 console.log(__dirname);
 const frontendPath = path.join(__dirname, '..', '..', '..', 'frontend');
-console.log(frontendPath);
+
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../frontend/build'))
-  
-  app.get('*', (req, res) => {
+  console.log("deplotyed!!!");
+  app.use(express.static(path.join(__dirname, '/build')));
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'build', 'index.html')) // relative path
   })
 }
