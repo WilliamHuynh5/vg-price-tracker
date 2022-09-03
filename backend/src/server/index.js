@@ -11,13 +11,14 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
+const frontendPath = path.join(__dirname, '..', '..', '..', 'frontend');
 const app = express()
 
 app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(frontendPath, "/build")));
+
 
 app.post("/api/auth/login", async (req, res) => {
   console.log('bodyLog')
@@ -100,10 +101,6 @@ app.post("/api/game/query/price", async (req, res) => {
   const gameTitle = req.body.gameTitle;
   res.json(query_game_price(gameTitle));
 });
-
-console.log(__dirname);
-const frontendPath = path.join(__dirname, '..', '..', '..', 'frontend');
-
 
 
 app.get("/*", (req, res) => {
