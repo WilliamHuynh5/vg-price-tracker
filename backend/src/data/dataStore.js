@@ -3,17 +3,19 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 console.log('here');
 console.log(__dirname);
 console.log('there')
 console.log(process.cwd());
+
 let tracked_games = {};
 let data = {
   users: [],
   games: {}
 };
 const tracked_games_path = 'src/data/tracked_games.json';
-const data_path = 'src/data/data.json';
+const data_path = __dirname + '/data.json';
 
 // Getters and setters for games
 
