@@ -15,8 +15,6 @@ const __dirname = dirname(__filename);
 const app = express()
 
 app.use(cors())
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
 
 app.post("/auth/login", async (req, res) => {
   const email = req.body.email;
@@ -99,13 +97,21 @@ app.post("/game/query/price", async (req, res) => {
 console.log(__dirname);
 const frontendPath = path.join(__dirname, '..', '..', '..', 'frontend');
 
-if (process.env.NODE_ENV === 'production') {
-  console.log("deplotyed!!!");
-  app.use(express.static(path.join(__dirname, '/build')));
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'build', 'index.html')) // relative path
-  })
-}
-app.listen(process.env.PORT || 5000);
+app.use(cors());
+
+app.use(express.static(path.join(frontendPath, "/build")));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "/build/index.html"));
+});
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+
+  console.log(`Listening on port ${port}`);
+
+});
+
 
 
