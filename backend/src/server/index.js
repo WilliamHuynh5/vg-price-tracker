@@ -14,7 +14,10 @@ const __dirname = dirname(__filename);
 
 const app = express()
 
-app.use(cors())
+app.use(cors());
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(frontendPath, "/build")));
 
 app.post("/api/auth/login", async (req, res) => {
   console.log('bodyLog')
@@ -101,10 +104,7 @@ app.post("/api/game/query/price", async (req, res) => {
 console.log(__dirname);
 const frontendPath = path.join(__dirname, '..', '..', '..', 'frontend');
 
-app.use(cors());
-app.use(express.json())
 
-app.use(express.static(path.join(frontendPath, "/build")));
 
 app.get("/*", (req, res) => {
   res.sendFile(path.join(frontendPath, "/build/index.html"));
