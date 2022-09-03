@@ -53,19 +53,21 @@ export async function query_game_track(gameTitle, platforms, digFlag, physFlag, 
       
       if (attributes[0].name !== 'data' || retailPrefs[attributes[1].value] === undefined|| retailPrefs[attributes[1].value] === false) {
         continue;
-      } else if ((digFlag === true && physFlag === false) || (digFlag === false && physFlag === true)) {
+      } else if ((digFlag === true && physFlag === false)) {
         if (attributes[1].value !== 'store.playstation.au' || attributes[1].value !== 'nintendo.com.au') {
           continue;
         }
-      } 
-
+      } else if (digFlag === false && physFlag === true) {
+        if (attributes[1].value === 'store.playstation.au' || attributes[1].value === 'nintendo.com.au') {
+          continue;
+        }
+      }
       const store = attributes[1].value;
       const currPrice = attributes[2].value;
       const lowestPrice = attributes[3].value;
       const buyNow = attributes[5].value;
       const name = attributes[7].value;
       const date = new Date().toLocaleString();
-      
       const prodObj = {date: date, name: name, store : store, currPrice: currPrice, lowestPrice:lowestPrice, buyNow: buyNow};
       gameObj.push(prodObj);
     }

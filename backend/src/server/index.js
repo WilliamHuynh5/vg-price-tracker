@@ -74,7 +74,6 @@ app.post("/data/set/cached/games", (req, res) => {
 app.post("/game/query/title", async (req, res) => {
   const title = req.body.gameTitle;
   const platforms = req.body.platforms;
-  console.log("plat: " + platforms);
   query_game_title(title, platforms).then(response => res.json(response));
 });
 
@@ -89,7 +88,6 @@ app.post("/game/query/track", async (req, res) => {
 
 app.post("/game/query/price", async (req, res) => {
   const gameTitle = req.body.gameTitle;
-  console.log(gameTitle)
   res.json(query_game_price(gameTitle));
 });
 

@@ -7,16 +7,21 @@ import { apiCall } from '../helpers/fetch_api';
 import { useContextHook, Context } from '../helpers/context';
 import PropTypes from 'prop-types';
 import Error from './ErrorMessage';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import amazonStoreLogo from '../assets/amazon-store-logo.png';
 import bigwStoreLogo from '../assets/bigw-store-logo.png';
-import ebgamesStoreLogo from '../assets/ebgames-store-logo.jpg';
+import ebgamesStoreLogo from '../assets/ebgames-store-logo.png';
 import eshopStoreLogo from '../assets/eshop-store-logo.png';
 import harveynormanStoreLogo from '../assets/harveynorman-store-logo.jpg';
 import jbhifiStoreLogo from '../assets/jbhifi-store-logo.jpg';
 import playasiaStoreLogo from '../assets/playasia-store-logo.jpg';
 import psStoreLogo from '../assets/ps-store-logo.png';
 import targetStoreLogo from '../assets/target-store-logo.png';
+import gdgamesStoreLogo from '../assets/gdgames-store-logo.png';
+import ozgameshopStoreLogo from '../assets/ozgameshop-store-logo.png';
+import cssVars from '@mui/system/cssVars';
 
 const TrackGameModal = (props) => {
   const gameTitle = props.gameTitle;
@@ -30,7 +35,15 @@ const TrackGameModal = (props) => {
   
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleResultsClose = () => {
+    setters.setHasNewGame(true);
+    setShowResults(false);
+  }
+  const handleResultsShow = () => setShowResults(true);
+  
+  const [gamesList, setGamesList] = useState([]);
   const [show, setShow] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [checkedDigital, setCheckedDigital] = useState(true);
   const [checkedPhysical, setCheckedPhysical] = useState(true);
@@ -45,9 +58,24 @@ const TrackGameModal = (props) => {
   const [checkedPlayasia, setCheckedPlayasia] = useState(true);
   const [checkedPs, setCheckedPs] = useState(true);
   const [checkedTarget, setCheckedTarget] = useState(true);
+  const [checkedGdgames, setCheckedGdgames] = useState(true);
+  const [checkedOzgameshop, setCheckedOzgameshop] = useState(true);
   
   const { getters, setters } = useContextHook(Context);
-
+  const resultsCardList = [];
+  
+  const renderCurrPriceTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Current lowest price
+    </Tooltip>
+  );
+  
+  const renderAllTimeLowTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      All time lowest price
+    </Tooltip>
+  );
+  
   const trackGame = async () => {
     if(!checkedPhysical && !checkedDigital) {
       setErrPref(true);
@@ -63,11 +91,14 @@ const TrackGameModal = (props) => {
       'jbhifi.com.au': checkedJbhifi,
       'playasia.com': checkedPlayasia,
       'store.playstation.au': checkedPs,
-      'target.com.au': checkedTarget
+      'target.com.au': checkedTarget,
+      'gdgames.com.au': checkedGdgames,
+      'ozgameshop.com': checkedOzgameshop
     }
     setIsLoading(true);
+    const results = [];
+    
     for (const platform of gamePlatforms) {
-      console.log(platform);
       try {
         const response = await apiCall(
           'game/query/track',
@@ -78,18 +109,61 @@ const TrackGameModal = (props) => {
         if ('error' in response) {
           console.log(response);
         }
-        setters.setHasNewGame(true);
+        results.push(response);
       } catch {
         continue;
       }
-      setIsLoading(false);
-      handleClose();
     }
+    for (const result of results[0]) {
+      console.log(result)
+      const index = result.name.indexOf(' on ');
+      const name = result.name.substring(0, index);
+      const store = result.name.substring(index + 4, result.name.length);
+      const resultCard = (
+        <>
+          <p style={{fontWeight:'bold', fontSize:'1.3rem'}}>{'🛍️ ' + name}</p>
+          <span style={{fontWeight:'light', fontSize:'1.1rem'}}>{'🏪 ' + store}</span>
+          <br></br>
+          <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 200 }}
+                overlay={renderCurrPriceTooltip}
+          >
+            <span style={{fontWeight:'bold', color : 'green', fontSize:'1.2rem'}}>{'💲 ' + result.currPrice + ' AUD'}</span>
+          </OverlayTrigger>
+          <br></br>
+          <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 200 }}
+                overlay={renderAllTimeLowTooltip}
+          >
+            <span style={{fontWeight:'bold', color : 'orange', fontSize:'1.2rem'}}>{'✨ ' + result.lowestPrice + ' AUD'}</span>
+          </OverlayTrigger>
+          <br></br>
+          <span>🛒 <a style={{fontWeight: 'bold', fontSize:'1.2rem'}} href={result.buyNow}>Buy now! </a></span>
+          
+          <hr />
+          <div style={{marginBottom:'2rem'}}></div>
+        </>
+      );
+      resultsCardList.push(resultCard);
+    }
+    console.log(results);
+    setIsLoading(false);
+    setGamesList(resultsCardList)
+    handleClose();
+    handleResultsShow();
   };
+  
+  const resultsRender = (
+    <div>
+      {gamesList}
+    </div>
+  )
   
   const trackModalBody = (
   <>
-    <h4>Select Preference</h4>
+    <h3>Select Preference</h3>
     {/* Type preference */}
     <div style={{display: 'flex', flexDirection: 'row'}}>
       <div style={{width: '120px'}}>
@@ -101,7 +175,7 @@ const TrackGameModal = (props) => {
     </div>  
     {createErrPref && <Error error={errMsgPref} />}
     <div style={{marginBottom:'1.5rem'}}></div>
-    <h4>Select Retailers</h4>
+    <h3>Select Retailers</h3>
     <div style={{marginBottom:'1rem'}}></div>
     
     
@@ -113,11 +187,11 @@ const TrackGameModal = (props) => {
         <img src = {bigwStoreLogo} style={{width: '50px', height: '50px', cursor:'pointer'}}></img>
       </div>
       <div style={{width: '120px', height: '50px', textAlign: 'center'}} onClick={()=> {setCheckedEbgames(!checkedEbgames)}}>
-        <img src = {ebgamesStoreLogo} style={{width: '90px', height: '90px', cursor:'pointer', marginTop: '-18px'}}></img>
+        <img src = {ebgamesStoreLogo} style={{width: '61px', height: '61px', cursor:'pointer', marginTop: '-2px', marginLeft:'2px'}}></img>
       </div>
       
       <div style={{width: '120px', height: '50px', textAlign: 'center'}} onClick={()=> {setCheckedEshop(!checkedEshop)}}>
-        <img src = {eshopStoreLogo} style={{width: '100px', height: '100px', cursor:'pointer', marginTop: '-20px'}}></img>
+        <img src = {eshopStoreLogo} style={{width: '50px', height: '50px', cursor:'pointer', marginTop: '2px'}}></img>
       </div>
     </div>
     <div style={{marginBottom:'1rem'}}></div>
@@ -174,12 +248,24 @@ const TrackGameModal = (props) => {
       <div style={{width: '120px', height: '50px', textAlign: 'center'}} onClick={()=> {setCheckedTarget(!checkedTarget)}}>
         <img src = {targetStoreLogo} style={{width: '70px', height: '70px', cursor:'pointer'}}></img>
       </div>
+      <div style={{width: '120px', height: '50px', textAlign: 'center'}} onClick={()=> {setCheckedGdgames(!checkedGdgames)}}>
+        <img src = {gdgamesStoreLogo} style={{width: '80px', height: '20px', cursor:'pointer', marginTop: '20px'}}></img>
+      </div>
+      <div style={{width: '120px', height: '50px', textAlign: 'center'}} onClick={()=> {setCheckedOzgameshop(!checkedOzgameshop)}}>
+        <img src = {ozgameshopStoreLogo} style={{width: '60px', height: '70px', cursor:'pointer', marginTop: '0px'}}></img>
+      </div>
     </div>
     <br></br>
     
     <div style={{display: 'flex', flexDirection: 'row'}}>
       <div style={{width: '120px', height: '50px', textAlign: 'center'}}> 
         <FormCheck type="switch" checked={checkedTarget} onChange={()=> {setCheckedTarget(!checkedTarget)}}></FormCheck>
+      </div>
+      <div style={{width: '120px', height: '50px', textAlign: 'center'}}> 
+        <FormCheck type="switch" checked={checkedGdgames} onChange={()=> {setCheckedGdgames(!checkedGdgames)}}></FormCheck>
+      </div>
+      <div style={{width: '120px', height: '50px', textAlign: 'center'}}> 
+        <FormCheck type="switch" checked={checkedOzgameshop} onChange={()=> {setCheckedOzgameshop(!checkedOzgameshop)}}></FormCheck>
       </div>
     </div>
     
@@ -215,6 +301,25 @@ const TrackGameModal = (props) => {
           </Button>
           <Button variant="success" onClick={trackGame} disabled={isLoading}>
             Scrape Prices!
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      
+      <Modal show={showResults} onHide={handleResultsClose}>
+        <Modal.Header closeButton>
+            <Modal.Title className="text-primary" style={{fontWeight:'bold', fontSize:'2rem'}}>
+              Tracking results
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            {resultsRender}
+          </div>
+         
+        </Modal.Body>
+        <Modal.Footer className="justify-content-between">
+          <Button variant="secondary" onClick={handleResultsClose}>
+            Go back!
           </Button>
         </Modal.Footer>
       </Modal>

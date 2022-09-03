@@ -33,7 +33,7 @@ const LoginForm = () => {
   return (
     <Form>
       <FormInput
-        label="Email address"
+        label="Username"
         id="email"
         type="text"
         onChange={(e) => {

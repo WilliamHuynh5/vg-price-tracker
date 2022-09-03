@@ -3,9 +3,9 @@ import { get_data, set_data } from "../data/dataStore.js";
 
 export function registerValidityCheck(email, password, confirmPassword) {  
 
-  if (EmailValidator.validate(email) === false) {
-    return {error: "Error: Please enter a valid email!"}; 
-  }
+  // if (EmailValidator.validate(email) === false) {
+  //   return {error: "Error: Please enter a valid email!"}; 
+  // }
   
   if (password != confirmPassword) {
     return {error: "Error: Passwords do not match!"};

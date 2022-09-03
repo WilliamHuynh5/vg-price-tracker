@@ -2,14 +2,12 @@ import { React, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import PropTypes from 'prop-types';
 import { useContextHook, Context } from '../helpers/context';
-import { apiCall } from '../helpers/fetch_api';
-import Button from 'react-bootstrap/Button';
-import { fontBold, font, backgroundGrey } from '../inlineStyles';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { fontBold, } from '../inlineStyles';
 import PS5Logo from '../assets/ps5-logo.png'
 import PS4Logo from '../assets/ps4-logo.png'
 import SWITCHLogo from '../assets/switch-logo.png'
-import NinLogo from '../assets/nintendo-logo.png'
-import PSLogo from '../assets/ps-logo.png'
 import DeleteGameModal from './DeleteGameModal';
 import TrackGameModal from './TrackGameModal';
 
@@ -26,11 +24,22 @@ const GameCard = (props) => {
   const allTimeLow = (props.allTimeLow) ? props.allTimeLow : '<no data>';
   const buyNowLink = (props.buyNow) ? props.buyNow : '<no data>';
   
-  
   const currentLowest = '💲';
   const allTimeLowest = '✨ ';
   const lastScraped = '📅 Scraped: ';
   const buyNow = '🛒 Buy now:';
+  
+  const renderCurrPriceTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Current lowest price
+    </Tooltip>
+  );
+  
+  const renderAllTimeLowTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      All time lowest price
+    </Tooltip>
+  );
 
   const platformIcons = []
   if (platformPref.includes('ps5')) {
@@ -53,7 +62,7 @@ const GameCard = (props) => {
   }
 
   return (
-<>
+  <>
       <Card
         style={{
           width: '18rem',
@@ -85,14 +94,30 @@ const GameCard = (props) => {
             <Card.Body style={{textAlign: 'left', marginTop: '1rem'}}>
               <Card.Title style={fontBold}>{gameTitle}</Card.Title>
               <div style={{marginBottom : '1rem'}}></div>
-              {date === '<no data>' ? <span style={{fontSize: '1.05rem'}}>{currentLowest} <span style={{fontWeight:'lighter', color : 'red'}}>{currPrice}</span></span> : <span style={{fontSize: '1.05rem'}}>{currentLowest} <span style={{fontWeight:'bold', color : 'green'}}>{currPrice + ' AUD'}</span></span>}
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 200 }}
+                overlay={renderCurrPriceTooltip}
+              >
+                {currPrice === '<no data>' 
+                  ? <span style={{fontSize: '1.05rem'}}>{currentLowest} <span style={{fontWeight:'lighter', color : 'red'}}>{currPrice}</span></span> 
+                  : <span style={{fontSize: '1.05rem'}}>{currentLowest} <span style={{fontWeight:'bold', color : 'green'}}>{currPrice + ' AUD'}</span></span>}
+              </OverlayTrigger>    
               <br></br>
-              {date === '<no data>' ? <span style={{fontSize: '1.05rem'}}>{allTimeLowest} <span style={{fontWeight:'lighter', color : 'red'}}>{allTimeLow}</span></span> : <span style={{fontSize: '1.05rem'}}>{allTimeLowest} <span style={{fontWeight:'bold', color : 'orange'}}>{+ allTimeLow + ' AUD'}</span></span>}
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 200 }}
+                overlay={renderAllTimeLowTooltip}
+              >
+              {allTimeLow === '<no data>' 
+                ? <span style={{fontSize: '1.05rem'}}>{allTimeLowest} <span style={{fontWeight:'lighter', color : 'red'}}>{allTimeLow}</span></span> 
+                : <span style={{fontSize: '1.05rem'}}>{allTimeLowest} <span style={{fontWeight:'bold', color : 'orange'}}>{+ allTimeLow + ' AUD'}</span></span>}
+              </OverlayTrigger>  
               <br></br>
               <br></br>
-              {date === '<no data>' ? <span style={{fontSize: '1.05rem'}}>{'📅'} <span style={{color : 'red'}}>{date}</span></span> :<span style={{fontSize: '1.05rem'}}>{'📅'} <span style={{fontWeight:'bold'}}>{date}</span></span>}
-              <br></br>
-              {date === '<no data>' ? <span style={{fontSize: '1.05rem', color: 'red'}}>{'🛒 <no data>'}</span> : <span style={{fontSize: '1.05rem'}}>{'🛒'} <a style={{fontWeight: 'bold'}} href={buyNowLink}> Buy now! </a></span>}
+              {buyNowLink === '<no data>' 
+                ? <span style={{fontSize: '1.05rem', color: 'red'}}>{'🛒 <no data>'}</span> 
+                : <span style={{fontSize: '1.05rem'}}>{'🛒'} <a style={{fontWeight: 'bold'}} href={buyNowLink}> Buy now! </a></span>}
               
               <br></br>
               <div style={{marginBottom : '1rem'}}></div>
