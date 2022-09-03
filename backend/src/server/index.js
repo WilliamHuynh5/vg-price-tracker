@@ -103,7 +103,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../frontend/build'))
   
   app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'src', 'index.js')) // relative path
+    res.sendFile(path.join(frontendPath, 'build', 'index.html')) // relative path
   })
 }
 app.listen(process.env.PORT || 5000);
