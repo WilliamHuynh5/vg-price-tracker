@@ -18,8 +18,8 @@ const LoginForm = () => {
   const login = async () => {
     setErr(false);
     const token = await apiCall('auth/login', 'POST', {
-      email,
-      password,
+      'email': email,
+      'password': password,
     });
     if ('error' in token) {
       setErr(true);
