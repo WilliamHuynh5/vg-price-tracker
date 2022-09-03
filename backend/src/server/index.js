@@ -101,9 +101,9 @@ const frontendPath = path.join(__dirname, '..', '..', '..', 'frontend');
 
 if (process.env.NODE_ENV === 'production') {
   console.log("deplotyed!!!");
-  app.use(express.static(path.join(__dirname, '/public')));
+  app.use(express.static(path.join(__dirname, '/build')));
   app.get('/*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'public', 'index.html')) // relative path
+    res.sendFile(path.join(frontendPath, 'build', 'index.html')) // relative path
   })
 }
 app.listen(process.env.PORT || 5000);
