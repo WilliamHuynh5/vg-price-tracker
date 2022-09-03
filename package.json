@@ -1,0 +1,27 @@
+{
+  "name": "vg-price-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "gh-pages": "^4.0.0",
+    "jssoup": "^0.0.15"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./backend/src/server/index.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WilliamHuynh5/vg-price-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WilliamHuynh5/vg-price-tracker/issues"
+  },
+  "homepage": "https://github.com/WilliamHuynh5/vg-price-tracker#readme"
+}
