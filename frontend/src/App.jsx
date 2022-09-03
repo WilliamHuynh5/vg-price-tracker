@@ -26,6 +26,7 @@ function App() {
     setDisplayedGames
   };
   useEffect(() => {
+    document.title = 'VG Price Tracker';
     const location = window.location.href;
     if (!getters.userToken && !location.includes('auth')) {
       window.location.href = '/auth/login';
