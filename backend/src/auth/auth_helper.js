@@ -23,7 +23,7 @@ export function registerValidityCheck(email, password, confirmPassword) {
     return {error: "Error: Passwords do not match!"};
   }
   
-  if (isDuplicateEmail === true) {
+  if (isDuplicateEmail(email) === true) {
     return  {error: "Error: Username already taken!"}
   }
   
