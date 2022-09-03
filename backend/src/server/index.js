@@ -6,6 +6,11 @@ import { get_tracked_games, set_tracked_games } from "../data/dataStore.js";
 import { query_game_title, query_game_price, query_game_track } from "../query/query.js";
 import { auth_login, auth_logout, auth_register } from '../auth/auth.js';
 import { addGame, getGames, removeGame } from '../user/user.js';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express()
 
@@ -91,7 +96,7 @@ app.post("/game/query/price", async (req, res) => {
   res.json(query_game_price(gameTitle));
 });
 
-
+console.log(__dirname);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../frontend/build'))
   
