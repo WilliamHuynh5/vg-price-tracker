@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "body-parser": "^1.20.0",
     "gh-pages": "^4.0.0",
     "jssoup": "^0.0.15"
   },
