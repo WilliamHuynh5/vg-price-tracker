@@ -12,7 +12,7 @@ export function registerValidityCheck(email, password, confirmPassword) {
   }
   
   if (isDuplicateEmail === true) {
-    return  {error: "Error: Email already taken!"}
+    return  {error: "Error: Username already taken!"}
   }
   
   return {};
@@ -22,6 +22,8 @@ export function registerValidityCheck(email, password, confirmPassword) {
 export function isDuplicateEmail(email) {
   const data = get_data();
   for (const user of data.users) {
+    console.log(user.email);
+    console.log(email);
     if (user.email === email) {
       return true;
     }
