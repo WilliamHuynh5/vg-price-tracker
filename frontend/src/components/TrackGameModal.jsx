@@ -115,7 +115,6 @@ const TrackGameModal = (props) => {
       }
     }
     for (const result of results[0]) {
-      console.log(result)
       const index = result.name.indexOf(' on ');
       const name = result.name.substring(0, index);
       const store = result.name.substring(index + 4, result.name.length);
@@ -148,7 +147,6 @@ const TrackGameModal = (props) => {
       );
       resultsCardList.push(resultCard);
     }
-    console.log(results);
     setIsLoading(false);
     setGamesList(resultsCardList)
     handleClose();
