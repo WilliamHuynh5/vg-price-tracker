@@ -14,9 +14,9 @@ const __dirname = dirname(__filename);
 
 const app = express()
 
-app.use(cors())
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
+// app.use(cors())
+// app.use(express.urlencoded({ extended: false }))
+// app.use(express.json())
 
 app.post("/auth/login", async (req, res) => {
   const email = req.body.email;
