@@ -90,5 +90,14 @@ app.post("/game/query/price", async (req, res) => {
   res.json(query_game_price(gameTitle));
 });
 
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../frontend/build'))
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')) // relative path
+  })
+}
 app.listen(process.env.PORT || 5000);
+
 
