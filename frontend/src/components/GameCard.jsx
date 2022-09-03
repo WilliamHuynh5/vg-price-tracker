@@ -107,7 +107,17 @@ const GameCard = (props) => {
             }}
           >
             <DeleteGameModal gameId={props.id} gameTitle={gameTitle}></DeleteGameModal>
-            <TrackGameModal gameId={props.id} gameTitle={gameTitle} gamePlatforms={platformPref} digitalPref={digitalPref} physicalPref={physicalPref}></TrackGameModal>
+            <TrackGameModal 
+              gameId={props.id} 
+              gameTitle={gameTitle} 
+              gamePlatforms={platformPref} 
+              digitalPref={digitalPref} 
+              physicalPref={physicalPref}
+              date={date}
+              currPrice={currPrice}
+              allTimeLow={allTimeLow}
+              buyNow={buyNowLink}>
+            </TrackGameModal>
           </div>
         </div>
       </Card>

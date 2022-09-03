@@ -36,9 +36,9 @@ export function query_game_title(title, platforms) {
   return res;
 }
 
-export async function query_game_track(gameTitle, platforms, digFlag, physFlag) {  
+export async function query_game_track(gameTitle, platforms, digFlag, physFlag, retailPrefs) {  
   const data = get_data();
-  const searchTerm = gameTitle.toLowerCase().replace(' ', '+');
+  const searchTerm = gameTitle.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,'').replace(' ', '+');
   const gameObj = [];
   const url = "https://gamedeals.com.au/search.php?search=" + searchTerm + '&' + 'platform=' + platforms;
   let res = fetch(url).then(function (response) {
@@ -48,27 +48,24 @@ export async function query_game_track(gameTitle, platforms, digFlag, physFlag) 
     const doc = parser.parseFromString(html, 'text/html');
     const links = doc.getElementsByTagName('a');
     gameObj[gameTitle] = [];
-    for (const x of links) {
-      const attributes = x.attributes;
+    for (const link of links) {
+      const attributes = link.attributes;
       
-      if (attributes[0].name !== 'data' || attributes[1].value === 'mightyape.com.au') {
+      if (attributes[0].name !== 'data' || retailPrefs[attributes[1].value] === undefined|| retailPrefs[attributes[1].value] === false) {
         continue;
-      } else if (digFlag === true && physFlag === false) {
-        if (attributes[1].value !== 'store.playstation.au') {
+      } else if ((digFlag === true && physFlag === false) || (digFlag === false && physFlag === true)) {
+        if (attributes[1].value !== 'store.playstation.au' || attributes[1].value !== 'nintendo.com.au') {
           continue;
         }
-      } else if (digFlag === false && physFlag === true) {
-        if (attributes[1].value === 'store.playstation.au') {
-          continue;
-        }
-      }
-      
+      } 
+
       const store = attributes[1].value;
       const currPrice = attributes[2].value;
       const lowestPrice = attributes[3].value;
       const buyNow = attributes[5].value;
       const name = attributes[7].value;
       const date = new Date().toLocaleString();
+      
       const prodObj = {date: date, name: name, store : store, currPrice: currPrice, lowestPrice:lowestPrice, buyNow: buyNow};
       gameObj.push(prodObj);
     }

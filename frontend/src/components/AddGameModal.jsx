@@ -8,7 +8,6 @@ import PS5_Logo from '../assets/ps5-c-logo.png'
 import switch_Logo from '../assets/switch-c-logo.png'
 import { useContextHook, Context } from '../helpers/context';
 import Error from './ErrorMessage';
-import { apiCall } from "../helpers/fetch_api";
 
 const AddGameModal = () => {
   const { getters, setters } = useContextHook(Context);
@@ -52,11 +51,7 @@ const AddGameModal = () => {
       setErrMsgPlat('Please select a platform.');
       return;
     }
-    if(!checkedPhysical && !checkedDigital) {
-      setErrPref(true);
-      setErrMsgPref('Please select at least one preference.');
-      return;
-    }
+
     const gameTitleLowered = gameTitle.toLowerCase();
     const gameDict = {'gameTitle': gameTitleLowered, 'platformPref': [], 'physicalPref': checkedPhysical, 'digitalPref': checkedDigital};
 
@@ -131,16 +126,7 @@ const AddGameModal = () => {
           </div>
           {createErrPlat && <Error error={errMsgPlat} />}
           <br></br>
-          {/* Type preference */}
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div style={{width: '120px'}}>
-              <FormCheck label='Physical' defaultChecked={true} onChange={()=> {setCheckedPhysical(!checkedPhysical)}}></FormCheck>
-            </div>
-            <div>
-              <FormCheck label='Digital' defaultChecked={true} onChange={()=> {setCheckedDigital(!checkedPhysical)}}></FormCheck>
-            </div>
-          </div>  
-          {createErrPref && <Error error={errMsgPref} />}
+
 
           
         </Modal.Body>
