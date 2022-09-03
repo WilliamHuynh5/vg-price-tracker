@@ -1,6 +1,7 @@
 // server/index.js
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import { get_tracked_games, set_tracked_games } from "../data/dataStore.js";
 import { query_game_title, query_game_price, query_game_track } from "../query/query.js";
 import { auth_login, auth_logout, auth_register } from '../auth/auth.js';
