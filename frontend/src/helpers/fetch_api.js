@@ -20,6 +20,7 @@ export const apiCall = async (path, method, body, token) => {
     return response.json();
   } catch (err) {
     console.log(err);
+    console.log("error here!")
   }
 };
 
