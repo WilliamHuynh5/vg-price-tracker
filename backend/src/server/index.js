@@ -90,7 +90,5 @@ app.post("/game/query/price", async (req, res) => {
   res.json(query_game_price(gameTitle));
 });
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server listening on ${PORT}`);
-});
+app.listen(process.env.PORT || 5000);
 
