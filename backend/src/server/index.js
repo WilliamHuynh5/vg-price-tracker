@@ -1,7 +1,6 @@
 // server/index.js
 import express from 'express';
 import cors from 'cors';
-import { PORT } from "./config.js";
 import { get_tracked_games, set_tracked_games } from "../data/dataStore.js";
 import { query_game_title, query_game_price, query_game_track } from "../query/query.js";
 import { auth_login, auth_logout, auth_register } from '../auth/auth.js';
@@ -91,7 +90,7 @@ app.post("/game/query/price", async (req, res) => {
   res.json(query_game_price(gameTitle));
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log(`Server listening on ${PORT}`);
 });
 
