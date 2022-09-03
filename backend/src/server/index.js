@@ -16,25 +16,29 @@ const app = express()
 
 app.use(cors())
 
-app.post("/auth/login", async (req, res) => {
+app.post("/api/auth/login", async (req, res) => {
+  console.log('bodyLog')
+  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
   res.json(auth_login(email, password));
 });
 
-app.post("/auth/register", async (req, res) => {
+app.post("/api/auth/register", async (req, res) => {
+  console.log('bodyReg')
+  console.log(req.body);
   const email = req.body.email;
   const password = req.body.password;
   const confirm_password = req.body.confirmPassword;
   res.json(auth_register(email, password, confirm_password));
 });
 
-app.post("/auth/logout", async (req, res) => {
+app.post("/api/auth/logout", async (req, res) => {
   const token = req.body.token;
   res.json(auth_logout(token));
 });
 
-app.post("/user/add/game", async (req, res) => {
+app.post("/api/user/add/game", async (req, res) => {
   const token = req.headers.token;
   const gameObj = req.body.resp;
   const platforms = req.body.platforms;
@@ -44,43 +48,43 @@ app.post("/user/add/game", async (req, res) => {
   res.json(addGame(token, gameObj, platforms, physicalFlag, digitalFlag));
 });
 
-app.get("/user/get/games", async (req, res) => {
+app.get("/api/user/get/games", async (req, res) => {
   const token = req.headers.token;
   res.json(getGames(token));
 });
 
-app.delete("/user/delete/game", async (req, res) => {
+app.delete("/api/user/delete/game", async (req, res) => {
   const token = req.headers.token;
   const gameId = req.query.gameId;
   res.json(removeGame(token, parseInt(gameId)));
 });
 
-app.get("/data/get/tracked/games", (req, res) => {
+app.get("/api/data/get/tracked/games", (req, res) => {
   res.json(get_tracked_games());
 });
 
-app.post("/data/set/tracked/games", (req, res) => {
+app.post("/api/data/set/tracked/games", (req, res) => {
   const data = JSON.stringify(req.body);
   res.json(set_tracked_games(data));
 });
 
-app.get("/data/get/cached/games", (req, res) => {
+app.get("/api/data/get/cached/games", (req, res) => {
   res.json(get_cached_games());
 });
 
-app.post("/data/set/cached/games", (req, res) => {
+app.post("/api/data/set/cached/games", (req, res) => {
   const data = JSON.stringify(req.body);
   res.json(set_cached_games(data));
 });
 
 
-app.post("/game/query/title", async (req, res) => {
+app.post("/api/game/query/title", async (req, res) => {
   const title = req.body.gameTitle;
   const platforms = req.body.platforms;
   query_game_title(title, platforms).then(response => res.json(response));
 });
 
-app.post("/game/query/track", async (req, res) => {
+app.post("/api/game/query/track", async (req, res) => {
   const title = req.body.gameTitle;
   const platforms = req.body.gamePlatforms;
   const digFlag = req.body.digitalPref;
@@ -89,7 +93,7 @@ app.post("/game/query/track", async (req, res) => {
   query_game_track(title, platforms, digFlag, physFlag, retailPrefs).then(response => res.json(response));
 });
 
-app.post("/game/query/price", async (req, res) => {
+app.post("/api/game/query/price", async (req, res) => {
   const gameTitle = req.body.gameTitle;
   res.json(query_game_price(gameTitle));
 });

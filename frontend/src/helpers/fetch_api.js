@@ -16,7 +16,7 @@ export const apiCall = async (path, method, body, token) => {
     body: method === 'GET' ? undefined : JSON.stringify(body),
   };
   try {
-    const response = await fetchWithTimeout(`/${path}`, init);
+    const response = await fetchWithTimeout(`/api/${path}`, init);
     return response.json();
   } catch (err) {
     console.log(err);
