@@ -4,11 +4,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-console.log('here');
-console.log(__dirname);
-console.log('there')
-console.log(process.cwd());
-
 let tracked_games = {};
 let data = {
   users: [],
