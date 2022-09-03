@@ -117,7 +117,7 @@ const GameCard = (props) => {
               <br></br>
               {buyNowLink === '<no data>' 
                 ? <span style={{fontSize: '1.05rem', color: 'red'}}>{'🛒 <no data>'}</span> 
-                : <span style={{fontSize: '1.05rem'}}>{'🛒'} <a style={{fontWeight: 'bold'}} href={buyNowLink}> Buy now! </a></span>}
+                : <span style={{fontSize: '1.05rem'}}>{'🛒'} <a style={{fontWeight: 'bold'}} href={buyNowLink} target="_blank"> Buy now! </a></span>}
               
               <br></br>
               <div style={{marginBottom : '1rem'}}></div>

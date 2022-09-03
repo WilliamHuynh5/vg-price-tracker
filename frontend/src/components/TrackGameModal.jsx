@@ -140,7 +140,7 @@ const TrackGameModal = (props) => {
             <span style={{fontWeight:'bold', color : 'orange', fontSize:'1.2rem'}}>{'✨ ' + result.lowestPrice + ' AUD'}</span>
           </OverlayTrigger>
           <br></br>
-          <span>🛒 <a style={{fontWeight: 'bold', fontSize:'1.2rem'}} href={result.buyNow}>Buy now! </a></span>
+          <span>🛒 <a style={{fontWeight: 'bold', fontSize:'1.2rem'}} href={result.buyNow} target="_blank">Buy now! </a></span>
           
           <hr />
           <div style={{marginBottom:'2rem'}}></div>
