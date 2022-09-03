@@ -6,7 +6,7 @@
  * @usage
  */
 export const apiCall = async (path, method, body, token) => {
-  console.log('body' + ' ' + body)
+  console.log(body)
   const init = {
     method: method,
     headers: {
