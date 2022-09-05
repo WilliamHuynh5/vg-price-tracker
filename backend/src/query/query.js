@@ -35,7 +35,7 @@ export function query_game_title(title, platforms) {
     return (results[0])
   })
   console.log(res);
-  return {};
+  return res;
 }
 
 export async function query_game_track(gameTitle, platforms, digFlag, physFlag, retailPrefs) {  
