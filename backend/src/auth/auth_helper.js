@@ -4,8 +4,6 @@ import { get_data, set_data } from "../data/dataStore.js";
 export function isDuplicateEmail(email) {
   const data = get_data();
   for (const user of data.users) {
-    console.log(user.email);
-    console.log(email);
     if (user.email === email) {
       return true;
     }

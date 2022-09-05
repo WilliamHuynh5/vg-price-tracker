@@ -1,8 +1,1 @@
-{
-  "users": [
-  ],
-  "games": {
-  },
-  "sessions": [
-  ]
-}
+{"users":[{"uId":0,"email":"wasd","password":"sha1$59b57e45$1$cf523253d12749df6a2969742c0f2eae3a375b81","tracked_games":[]},{"uId":1,"email":"betty@email.com","password":"sha1$d14764c3$1$af29d73eea65dae5c61fe99eabcfa9f4bac00a91","tracked_games":[]}],"games":{},"sessions":[{"token":"0c7e8177-0536-4c29-bd29-f18df552dc5b","uId":0},{"token":"1f252b40-e56c-4868-a653-416601655160","uId":0}]}

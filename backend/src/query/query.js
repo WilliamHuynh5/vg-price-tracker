@@ -31,9 +31,11 @@ export function query_game_title(title, platforms) {
   '&key=' + apiKey, options)
   .then(resp => resp.json())
   .then(({results}) => {
+    console.log(res);
     return (results[0])
   })
-  return res;
+  console.log(res);
+  return {};
 }
 
 export async function query_game_track(gameTitle, platforms, digFlag, physFlag, retailPrefs) {  

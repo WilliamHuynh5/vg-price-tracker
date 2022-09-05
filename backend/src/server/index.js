@@ -23,13 +23,16 @@ app.use(express.static(path.join(frontendPath, "/build")));
 app.post("/api/auth/login", async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  console.log('log ' + email + ' ' + password);
   res.json(auth_login(email, password));
 });
 
 app.post("/api/auth/register", async (req, res) => {
+
   const email = req.body.email;
   const password = req.body.password;
   const confirm_password = req.body.confirmPassword;
+  console.log('reg ' + email + ' ' + password);
   res.json(auth_register(email, password, confirm_password));
 });
 
@@ -79,6 +82,7 @@ app.post("/api/data/set/cached/games", (req, res) => {
 
 
 app.post("/api/game/query/title", async (req, res) => {
+  console.log(req.body);
   const title = req.body.gameTitle;
   const platforms = req.body.platforms;
   query_game_title(title, platforms).then(response => res.json(response));
