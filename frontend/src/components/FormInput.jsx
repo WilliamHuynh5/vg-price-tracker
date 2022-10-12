@@ -6,7 +6,7 @@ import { fontBold, inputBox } from '../inlineStyles';
 const FormInput = (props) => {
   return (
     <Form.Group className="mb-3 text-start" controlId={props.id}>
-      <Form.Label style={fontBold}>{props.label}</Form.Label>
+      <Form.Label style={{fontSize:'bold'}}>{props.label}</Form.Label>
       <Form.Control
         type={props.type}
         style={inputBox}
