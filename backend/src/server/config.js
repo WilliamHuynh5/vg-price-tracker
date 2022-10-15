@@ -1,6 +1,7 @@
 export const PORT = 5001;
 
-export const apiKey = '75be90f5aa3e4c72b3bbc2ee6a551e45';
+// PLEASE PROVIDE YOUR OWN API KEY HERE: 
+export const apiKey = '';
 
 export const ps5 = '187';
 export const ps4 = '18';
