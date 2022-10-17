@@ -8,5 +8,5 @@ Given a video game title and a preferred platform, it will allow the user to scr
 
 # setup locally
 - `npm install` to install dependencies
-- `npm start` in the `backend` directory to start the backend
-- `npm start` in the `frontend` directory to start the frontend
+- `npm start` in the `backend` directory to start the server
+- `npm start` in the `frontend` directory to start the client
