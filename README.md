@@ -1,6 +1,7 @@
 # vg-price-tracker
 
 Note: Website may no longer be accessible as Heroku has removed their free plan.
+
 https://vgpricetracker.herokuapp.com
 
 A webapp for those interested in tracking the price of video games, both physical and digital. 
