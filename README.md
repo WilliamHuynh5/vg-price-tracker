@@ -1,6 +1,6 @@
 # vg-price-tracker
 
-Note: Website may no longer be accessible as Heroku has removed their free plan.
+**Note: Website may no longer be accessible as Heroku has removed their free plan.**
 
 https://vgpricetracker.herokuapp.com
 
